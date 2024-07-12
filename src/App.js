@@ -57,10 +57,12 @@ const App = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Container style={{ padding: '20px' }}>
+      <Container style={{ padding: '20px', backgroundColor: darkTheme.palette.background.default, minHeight: '100vh', color: darkTheme.palette.text.primary }}>
         {!isLoggedIn ? (
           <>
-            <Typography variant="h4">{isCreatingAccount ? 'Create Account' : 'Login'}</Typography>
+            <Typography variant="h4" style={{ color: darkTheme.palette.text.primary }}>
+              {isCreatingAccount ? 'Create Account' : 'Login'}
+            </Typography>
             <TextField
               label="Username"
               variant="outlined"
@@ -78,7 +80,11 @@ const App = () => {
             <Button variant="contained" color="primary" onClick={handleSubmit} style={{ marginTop: '10px', color: darkTheme.palette.primary.contrastText }}>
               {isCreatingAccount ? 'Create Account' : 'Login'}
             </Button>
-            <Button color="secondary" onClick={() => setIsCreatingAccount(!isCreatingAccount)} style={{ marginTop: '10px', color: darkTheme.palette.secondary.contrastText }}>
+            <Button
+              color="secondary"
+              onClick={() => setIsCreatingAccount(!isCreatingAccount)}
+              style={{ marginTop: '10px', color: 'white' }}
+            >
               {isCreatingAccount ? 'Switch to Login' : 'Switch to Create Account'}
             </Button>
           </>
