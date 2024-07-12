@@ -1,36 +1,13 @@
 // src/Home.js
 import React, { useState, useEffect } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { Container, Typography, List, ListItem, ListItemText, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, Tabs, Tab, Box } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getDocs, collection, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { firestore } from './firebaseConfig';
 import TaskManager from './TaskManager';
 import Leaderboard from './Leaderboard';  // Import Leaderboard component
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#ff4081',
-    },
-    background: {
-      default: '#f5f5f5',
-    },
-  },
-  typography: {
-    h4: {
-      fontWeight: 'bold',
-      color: '#1976d2',
-    },
-    h5: {
-      fontWeight: 'bold',
-      color: '#ff4081',
-    },
-  },
-});
+import darkTheme from './theme'; // Import dark theme
 
 const Home = ({ username }) => {
   const [games, setGames] = useState([]);
@@ -142,17 +119,18 @@ const Home = ({ username }) => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container style={{ padding: '10px' }}>
+    <ThemeProvider theme={darkTheme}>
+      <Container style={{ padding: '10px', backgroundColor: darkTheme.palette.background.default, minHeight: '100vh' }}>
         {selectedGame ? (
           <Box>
-            <Box display="flex" alignItems="center">
-              <IconButton onClick={handleBackClick}>
+            <Box display="flex" alignItems="center" justifyContent="space-between">
+              <IconButton onClick={handleBackClick} style={{ color: '#ffffff' }}>
                 <ArrowBackIcon />
               </IconButton>
-              <Typography variant="h5" style={{ flexGrow: 1, textAlign: 'center' }}>
+              <Typography variant="h5" style={{ flexGrow: 1, textAlign: 'center', color: '#ffffff' }}>
                 {selectedGame.name}
               </Typography>
+              <Box width="48px"></Box> {/* Empty box to balance the back icon */}
             </Box>
             <Tabs
               value={selectedTab}
@@ -162,9 +140,8 @@ const Home = ({ username }) => {
               variant="fullWidth"
               style={{ marginTop: '10px' }}
             >
-            <Tab label="Tasks" style={{ color: 'white' }} />
-            <Tab label="Leaderboard" style={{ color: 'white' }} />
-
+              <Tab label="Tasks" style={{ color: 'white' }} />
+              <Tab label="Leaderboard" style={{ color: 'white' }} />
             </Tabs>
             {selectedTab === 0 && (
               <List style={{ marginTop: '10px' }}>
@@ -174,16 +151,20 @@ const Home = ({ username }) => {
                     key={task.id}
                     onClick={() => handleTaskClick(task)}
                     style={{
-                      backgroundColor: '#ffffff',
+                      backgroundColor: '#1d1d1d',
                       margin: '10px 0',
                       borderRadius: '8px',
-                      boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.3)',
                       transition: 'background-color 0.3s ease',
                       textDecoration: completedTasks.includes(task.id) ? 'line-through' : 'none',
                       color: completedTasks.includes(task.id) ? '#888' : 'inherit'
                     }}
                   >
-                    <ListItemText primary={task.task} />
+                    <ListItemText
+                      primary={task.task}
+                      primaryTypographyProps={{ style: { color: 'white' } }}
+                      secondaryTypographyProps={{ style: { color: 'gray' } }}
+                    />
                   </ListItem>
                 ))}
               </List>
@@ -204,16 +185,20 @@ const Home = ({ username }) => {
                   key={game.id}
                   onClick={() => handleGameClick(game.id, game.game)}
                   style={{
-                    backgroundColor: '#ffffff',
+                    backgroundColor: '#1d1d1d',
                     margin: '10px 0',
                     borderRadius: '8px',
-                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.3)',
                     transition: 'background-color 0.3s ease',
                   }}
-                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e0e0e0'}
-                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#333333'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#1d1d1d'}
                 >
-                  <ListItemText primary={game.game} />
+                  <ListItemText
+                    primary={game.game}
+                    primaryTypographyProps={{ style: { color: 'white' } }}
+                    secondaryTypographyProps={{ style: { color: 'gray' } }}
+                  />
                 </ListItem>
               ))}
             </List>

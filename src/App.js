@@ -1,6 +1,7 @@
 // src/App.js
 import React, { useState } from 'react';
-import { ThemeProvider, Container, Button, TextField, Typography } from '@mui/material';
+import { Container, Button, TextField, Typography, CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
 import { collection, getDocs, query, where, addDoc } from 'firebase/firestore';
 import { firestore } from './firebaseConfig';
 import Home from './Home';
@@ -55,22 +56,29 @@ const App = () => {
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Container style={{ backgroundColor: darkTheme.palette.background.default, minHeight: '100vh', padding: '20px' }}>
+      <CssBaseline />
+      <Container style={{ padding: '20px' }}>
         {!isLoggedIn ? (
           <>
-            <Typography variant="h4" gutterBottom>{isCreatingAccount ? 'Create Account' : 'Login'}</Typography>
+            <Typography variant="h4">{isCreatingAccount ? 'Create Account' : 'Login'}</Typography>
             <TextField
               label="Username"
               variant="outlined"
               fullWidth
               value={usernameInput}
               onChange={(e) => setUsernameInput(e.target.value)}
-              style={{ marginBottom: '20px' }}
+              style={{ marginTop: '20px' }}
+              InputLabelProps={{
+                style: { color: '#ffffff' },
+              }}
+              InputProps={{
+                style: { color: '#ffffff' },
+              }}
             />
-            <Button variant="contained" color="primary" onClick={handleSubmit} style={{ marginBottom: '10px' }}>
+            <Button variant="contained" color="primary" onClick={handleSubmit} style={{ marginTop: '10px', color: darkTheme.palette.primary.contrastText }}>
               {isCreatingAccount ? 'Create Account' : 'Login'}
             </Button>
-            <Button color="secondary" onClick={() => setIsCreatingAccount(!isCreatingAccount)}>
+            <Button color="secondary" onClick={() => setIsCreatingAccount(!isCreatingAccount)} style={{ marginTop: '10px', color: darkTheme.palette.secondary.contrastText }}>
               {isCreatingAccount ? 'Switch to Login' : 'Switch to Create Account'}
             </Button>
           </>

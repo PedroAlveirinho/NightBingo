@@ -1,0 +1,15 @@
+/* src/globalStyles.css */
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Dark background color */
+    color: #ffffff; /* Text color */
+    height: 100%;
+    width: 100%;
+  }
+  
+  #root {
+    height: 100%;
+    width: 100%;
+  }
+  

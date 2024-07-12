@@ -6,9 +6,11 @@ const darkTheme = createTheme({
     mode: 'dark',
     primary: {
       main: '#bb86fc',
+      contrastText: '#ffffff', // Ensures text color is white
     },
     secondary: {
       main: '#03dac6',
+      contrastText: '#000000', // Ensures text color is black
     },
     background: {
       default: '#121212',

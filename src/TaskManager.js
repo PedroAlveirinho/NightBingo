@@ -13,7 +13,8 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
+  Paper
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
@@ -142,15 +143,21 @@ const TaskManager = ({ username }) => {
   };
 
   return (
-    <Container style={{ padding: '10px' }}>
-      <Typography variant="h5" style={{ textAlign: 'center' }}>Tasks</Typography>
+    <Container component={Paper} style={{ padding: '20px', backgroundColor: '#1d1d1d', color: '#ffffff', marginTop: '20px' }}>
+      <Typography variant="h5" style={{ textAlign: 'center', color: '#ffffff' }}>Tasks</Typography>
       <TextField
         label="New Task"
         variant="outlined"
         fullWidth
         value={task}
         onChange={(e) => setTask(e.target.value)}
-        style={{ marginTop: '20px' }}
+        style={{ marginTop: '20px', color: '#ffffff', backgroundColor: '#2c2c2c', borderRadius: '5px' }}
+        InputLabelProps={{
+          style: { color: '#ffffff' },
+        }}
+        InputProps={{
+          style: { color: '#ffffff' },
+        }}
       />
       <Button variant="contained" color="primary" onClick={handleAddTask} style={{ marginTop: '10px' }}>
         Add Task
@@ -159,10 +166,15 @@ const TaskManager = ({ username }) => {
         {tasks.map((taskItem) => (
           <ListItem key={taskItem.id} secondaryAction={
             <IconButton edge="end" aria-label="delete" onClick={() => handleOpenTaskDialog(taskItem.id)}>
-              <DeleteIcon />
+              <DeleteIcon style={{ color: '#ffffff' }} />
             </IconButton>
           }>
-            <ListItemText primary={taskItem.task} secondary={`Added by ${taskItem.username}`} />
+            <ListItemText
+              primary={taskItem.task}
+              secondary={`Added by ${taskItem.username}`}
+              primaryTypographyProps={{ style: { color: 'white' } }}
+              secondaryTypographyProps={{ style: { color: 'gray' } }}
+            />
           </ListItem>
         ))}
       </List>
@@ -170,9 +182,9 @@ const TaskManager = ({ username }) => {
         open={openTaskDialog}
         onClose={handleCloseTaskDialog}
       >
-        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogTitle style={{ color: '#ffffff' }}>Confirm Deletion</DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText style={{ color: '#ffffff' }}>
             Are you sure you want to delete this task? This action cannot be undone.
           </DialogContentText>
         </DialogContent>
@@ -185,14 +197,20 @@ const TaskManager = ({ username }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Typography variant="h5" style={{ marginTop: '40px', textAlign: 'center' }}>Games</Typography>
+      <Typography variant="h5" style={{ marginTop: '40px', textAlign: 'center', color: '#ffffff' }}>Games</Typography>
       <TextField
         label="New Game"
         variant="outlined"
         fullWidth
         value={game}
         onChange={(e) => setGame(e.target.value)}
-        style={{ marginTop: '20px' }}
+        style={{ marginTop: '20px', color: '#ffffff', backgroundColor: '#2c2c2c', borderRadius: '5px' }}
+        InputLabelProps={{
+          style: { color: '#ffffff' },
+        }}
+        InputProps={{
+          style: { color: '#ffffff' },
+        }}
       />
       <Button variant="contained" color="primary" onClick={handleAddGame} style={{ marginTop: '10px' }}>
         Add Game
@@ -201,10 +219,15 @@ const TaskManager = ({ username }) => {
         {games.map((gameItem) => (
           <ListItem key={gameItem.id} secondaryAction={
             <IconButton edge="end" aria-label="delete" onClick={() => handleOpenGameDialog(gameItem.id)}>
-              <DeleteIcon />
+              <DeleteIcon style={{ color: '#ffffff' }} />
             </IconButton>
           }>
-            <ListItemText primary={gameItem.game} secondary={`Created by ${gameItem.username}`} />
+            <ListItemText
+              primary={gameItem.game}
+              secondary={`Created by ${gameItem.username}`}
+              primaryTypographyProps={{ style: { color: 'white' } }}
+              secondaryTypographyProps={{ style: { color: 'gray' } }}
+            />
           </ListItem>
         ))}
       </List>
@@ -212,9 +235,9 @@ const TaskManager = ({ username }) => {
         open={openGameDialog}
         onClose={handleCloseGameDialog}
       >
-        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogTitle style={{ color: '#ffffff' }}>Confirm Deletion</DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText style={{ color: '#ffffff' }}>
             Are you sure you want to delete this game? This action cannot be undone.
           </DialogContentText>
         </DialogContent>
