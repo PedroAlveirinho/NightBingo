@@ -1,13 +1,13 @@
 // src/Leaderboard.js
 import React, { useEffect, useState } from 'react';
-import { Typography, List, ListItem, ListItemText, Collapse } from '@mui/material';
+import { Typography, List, ListItem, ListItemText, Collapse, Container, Paper } from '@mui/material';
 import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
 import { firestore } from './firebaseConfig';
 
 const Leaderboard = ({ gameId }) => {
   const [participants, setParticipants] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [expandedUser, setExpandedUser] = useState(null); // Track which user's tasks are expanded
+  const [expandedUser, setExpandedUser] = useState(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -32,7 +32,6 @@ const Leaderboard = ({ gameId }) => {
             completedTasks: gameData.completedTasks && gameData.completedTasks[participant] ? gameData.completedTasks[participant] : []
           }));
 
-          // Sort participants by the number of completed tasks in descending order
           participantsWithTasks.sort((a, b) => b.completedTasks.length - a.completedTasks.length);
 
           setParticipants(participantsWithTasks);
@@ -44,7 +43,7 @@ const Leaderboard = ({ gameId }) => {
   }, [gameId]);
 
   const handleUserClick = (username) => {
-    setExpandedUser(expandedUser === username ? null : username); // Toggle expanded state
+    setExpandedUser(expandedUser === username ? null : username);
   };
 
   const getTaskNameById = (taskId) => {
@@ -53,7 +52,7 @@ const Leaderboard = ({ gameId }) => {
   };
 
   return (
-    <div>
+    <Container component={Paper} style={{ padding: '20px', backgroundColor: '#1d1d1d', color: '#ffffff', marginTop: '20px' }}>
       <Typography variant="h6" style={{ marginTop: '20px', textAlign: 'center' }}>
         Leaderboard
       </Typography>
@@ -76,7 +75,7 @@ const Leaderboard = ({ gameId }) => {
           </div>
         ))}
       </List>
-    </div>
+    </Container>
   );
 };
 

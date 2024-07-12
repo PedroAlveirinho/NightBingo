@@ -1,11 +1,36 @@
 // src/Home.js
 import React, { useState, useEffect } from 'react';
-import { Container, Typography, List, ListItem, ListItemText, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, Tabs, Tab } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Container, Typography, List, ListItem, ListItemText, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, Tabs, Tab, Box } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getDocs, collection, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { firestore } from './firebaseConfig';
 import TaskManager from './TaskManager';
 import Leaderboard from './Leaderboard';  // Import Leaderboard component
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#1976d2',
+    },
+    secondary: {
+      main: '#ff4081',
+    },
+    background: {
+      default: '#f5f5f5',
+    },
+  },
+  typography: {
+    h4: {
+      fontWeight: 'bold',
+      color: '#1976d2',
+    },
+    h5: {
+      fontWeight: 'bold',
+      color: '#ff4081',
+    },
+  },
+});
 
 const Home = ({ username }) => {
   const [games, setGames] = useState([]);
@@ -117,109 +142,119 @@ const Home = ({ username }) => {
   };
 
   return (
-    <Container style={{ padding: '10px' }}>
-      {selectedGame ? (
-        <>
-          <IconButton onClick={handleBackClick} style={{ marginTop: '10px' }}>
-            <ArrowBackIcon />
-          </IconButton>
-          <Typography variant="h4" style={{ marginTop: '10px', textAlign: 'center' }}>
-            Welcome to the game: {selectedGame.name}
-          </Typography>
-          <Tabs value={selectedTab} onChange={handleTabChange} style={{ marginTop: '20px' }}>
-            <Tab label="Tasks" />
-            <Tab label="Leaderboard" />
-          </Tabs>
-          {selectedTab === 0 && (
+    <ThemeProvider theme={theme}>
+      <Container style={{ padding: '10px' }}>
+        {selectedGame ? (
+          <Box>
+            <Box display="flex" alignItems="center">
+              <IconButton onClick={handleBackClick}>
+                <ArrowBackIcon />
+              </IconButton>
+              <Typography variant="h5" style={{ flexGrow: 1, textAlign: 'center' }}>
+                {selectedGame.name}
+              </Typography>
+            </Box>
+            <Tabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
+              style={{ marginTop: '10px' }}
+            >
+            <Tab label="Tasks" style={{ color: 'white' }} />
+            <Tab label="Leaderboard" style={{ color: 'white' }} />
+
+            </Tabs>
+            {selectedTab === 0 && (
+              <List style={{ marginTop: '10px' }}>
+                {tasks.map((task) => (
+                  <ListItem
+                    button
+                    key={task.id}
+                    onClick={() => handleTaskClick(task)}
+                    style={{
+                      backgroundColor: '#ffffff',
+                      margin: '10px 0',
+                      borderRadius: '8px',
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                      transition: 'background-color 0.3s ease',
+                      textDecoration: completedTasks.includes(task.id) ? 'line-through' : 'none',
+                      color: completedTasks.includes(task.id) ? '#888' : 'inherit'
+                    }}
+                  >
+                    <ListItemText primary={task.task} />
+                  </ListItem>
+                ))}
+              </List>
+            )}
+            {selectedTab === 1 && (
+              <Leaderboard gameId={selectedGame.id} />
+            )}
+          </Box>
+        ) : (
+          <Box textAlign="center" mt={2}>
+            <Typography variant="h4">Hello, {username}</Typography>
+            {username === 'Manager' && <TaskManager username={username} />}
+            <Typography variant="h5" mt={2}>Games</Typography>
             <List style={{ marginTop: '10px' }}>
-              {tasks.map((task) => (
+              {games.map((game) => (
                 <ListItem
                   button
-                  key={task.id}
-                  onClick={() => handleTaskClick(task)}
+                  key={game.id}
+                  onClick={() => handleGameClick(game.id, game.game)}
                   style={{
-                    backgroundColor: '#f0f0f0',
+                    backgroundColor: '#ffffff',
                     margin: '10px 0',
                     borderRadius: '8px',
                     boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
                     transition: 'background-color 0.3s ease',
-                    textDecoration: completedTasks.includes(task.id) ? 'line-through' : 'none',
-                    color: completedTasks.includes(task.id) ? '#888' : 'inherit'
                   }}
                   onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e0e0e0'}
-                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ffffff'}
                 >
-                  <ListItemText primary={task.task} />
+                  <ListItemText primary={game.game} />
                 </ListItem>
               ))}
             </List>
-          )}
-          {selectedTab === 1 && (
-            <Leaderboard gameId={selectedGame.id} />
-          )}
-        </>
-      ) : (
-        <>
-          <Typography variant="h4" style={{ textAlign: 'center' }}>Hello, {username}</Typography>
-          {username === 'Manager' && <TaskManager username={username} />}
-          <Typography variant="h5" style={{ marginTop: '20px', textAlign: 'center' }}>Games</Typography>
-          <List style={{ marginTop: '10px' }}>
-            {games.map((game) => (
-              <ListItem
-                button
-                key={game.id}
-                onClick={() => handleGameClick(game.id, game.game)}
-                style={{
-                  backgroundColor: '#f0f0f0',
-                  margin: '10px 0',
-                  borderRadius: '8px',
-                  boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-                  transition: 'background-color 0.3s ease',
-                }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e0e0e0'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
-              >
-                <ListItemText primary={game.game} />
-              </ListItem>
-            ))}
-          </List>
-        </>
-      )}
+          </Box>
+        )}
 
-      <Dialog open={joinDialogOpen} onClose={() => setJoinDialogOpen(false)}>
-        <DialogTitle>Join Game</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Do you want to join this game?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setJoinDialogOpen(false)} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleJoinGame} color="primary">
-            Join
-          </Button>
-        </DialogActions>
-      </Dialog>
+        <Dialog open={joinDialogOpen} onClose={() => setJoinDialogOpen(false)}>
+          <DialogTitle>Join Game</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Do you want to join this game?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setJoinDialogOpen(false)} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleJoinGame} color="primary">
+              Join
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-      <Dialog open={taskDialogOpen} onClose={() => setTaskDialogOpen(false)}>
-        <DialogTitle>{taskDialogType === 'complete' ? 'Complete Task' : 'Remove Task Completion'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {taskDialogType === 'complete' ? 'Are you sure you have completed this task?' : 'Are you sure you want to remove this task from your completed list?'}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setTaskDialogOpen(false)} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={taskDialogType === 'complete' ? handleConfirmTaskCompletion : handleConfirmTaskRemoval} color="primary">
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Container>
+        <Dialog open={taskDialogOpen} onClose={() => setTaskDialogOpen(false)}>
+          <DialogTitle>{taskDialogType === 'complete' ? 'Complete Task' : 'Remove Task Completion'}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              {taskDialogType === 'complete' ? 'Are you sure you have completed this task?' : 'Are you sure you want to remove this task from your completed list?'}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setTaskDialogOpen(false)} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={taskDialogType === 'complete' ? handleConfirmTaskCompletion : handleConfirmTaskRemoval} color="primary">
+              Confirm
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Container>
+    </ThemeProvider>
   );
 };
 

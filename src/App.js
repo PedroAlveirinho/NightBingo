@@ -1,8 +1,10 @@
+// src/App.js
 import React, { useState } from 'react';
-import { Container, Button, TextField, Typography } from '@mui/material';
+import { ThemeProvider, Container, Button, TextField, Typography } from '@mui/material';
 import { collection, getDocs, query, where, addDoc } from 'firebase/firestore';
 import { firestore } from './firebaseConfig';
 import Home from './Home';
+import darkTheme from './theme';
 
 const App = () => {
   const [username, setUsername] = useState('');
@@ -52,28 +54,31 @@ const App = () => {
   };
 
   return (
-    <Container>
-      {!isLoggedIn ? (
-        <>
-          <Typography variant="h4">{isCreatingAccount ? 'Create Account' : 'Login'}</Typography>
-          <TextField
-            label="Username"
-            variant="outlined"
-            fullWidth
-            value={usernameInput}
-            onChange={(e) => setUsernameInput(e.target.value)}
-          />
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
-            {isCreatingAccount ? 'Create Account' : 'Login'}
-          </Button>
-          <Button color="secondary" onClick={() => setIsCreatingAccount(!isCreatingAccount)}>
-            {isCreatingAccount ? 'Switch to Login' : 'Switch to Create Account'}
-          </Button>
-        </>
-      ) : (
-        <Home username={username} />
-      )}
-    </Container>
+    <ThemeProvider theme={darkTheme}>
+      <Container style={{ backgroundColor: darkTheme.palette.background.default, minHeight: '100vh', padding: '20px' }}>
+        {!isLoggedIn ? (
+          <>
+            <Typography variant="h4" gutterBottom>{isCreatingAccount ? 'Create Account' : 'Login'}</Typography>
+            <TextField
+              label="Username"
+              variant="outlined"
+              fullWidth
+              value={usernameInput}
+              onChange={(e) => setUsernameInput(e.target.value)}
+              style={{ marginBottom: '20px' }}
+            />
+            <Button variant="contained" color="primary" onClick={handleSubmit} style={{ marginBottom: '10px' }}>
+              {isCreatingAccount ? 'Create Account' : 'Login'}
+            </Button>
+            <Button color="secondary" onClick={() => setIsCreatingAccount(!isCreatingAccount)}>
+              {isCreatingAccount ? 'Switch to Login' : 'Switch to Create Account'}
+            </Button>
+          </>
+        ) : (
+          <Home username={username} />
+        )}
+      </Container>
+    </ThemeProvider>
   );
 };
 
