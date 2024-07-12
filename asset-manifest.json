@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/NightBingo/static/css/main.2810c00d.css",
-    "main.js": "/NightBingo/static/js/main.5943cf2b.js",
+    "main.js": "/NightBingo/static/js/main.6db9ccad.js",
     "index.html": "/NightBingo/index.html",
     "main.2810c00d.css.map": "/NightBingo/static/css/main.2810c00d.css.map",
-    "main.5943cf2b.js.map": "/NightBingo/static/js/main.5943cf2b.js.map"
+    "main.6db9ccad.js.map": "/NightBingo/static/js/main.6db9ccad.js.map"
   },
   "entrypoints": [
     "static/css/main.2810c00d.css",
-    "static/js/main.5943cf2b.js"
+    "static/js/main.6db9ccad.js"
   ]
 }
