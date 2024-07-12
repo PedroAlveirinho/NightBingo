@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/NightBingo/static/js/main.d361ffbd.js",
+    "index.html": "/NightBingo/index.html",
+    "main.d361ffbd.js.map": "/NightBingo/static/js/main.d361ffbd.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.d361ffbd.js"
+  ]
+}
